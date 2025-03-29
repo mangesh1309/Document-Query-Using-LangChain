@@ -1,0 +1,86 @@
+{% include "base.html" %}
+<section class="background-radial-gradient d-flex align-items-center justify-content-center vh-100">
+    <div class="container px-4 py-5 px-md-5 text-center text-lg-start">
+        <div class="row gx-lg-5 align-items-center"  style="margin-top: -70px">
+            <div class="col-lg-6 text-white" >
+                <h1 class="my-5 display-5 fw-bold ls-tight roboto-condensed-abc" style="font-size: 4rem;">
+                    Know Your PDFs <br />
+                    <span style="color: hsl(218, 81%, 75%)">The Best Way!</span>
+                </h1>
+                <p class="mb-4 roboto-condensed-abc">
+                    The ultimate platform to query over a PDF document!
+                    <br>Get Ready to:
+                    <br>1. Generate Question Bank
+                    <br>2. Chat With Documents
+                    <br>3. Summarize Long Documents
+                </p>
+            </div>
+
+            <div class="col-lg-6 position-relative">
+                    <!-- <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
+                <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div> -->
+
+
+
+                <div class="card bg-glass shadow-xl" style="background-color: #EEF2FF !important;">
+
+                            <div class="card-body px-4 py-5 px-md-5">
+                                
+                                <form method="POST">
+                                    {{ form.hidden_tag() }} 
+                    
+                                    <div class="form-outline mb-4">
+                                        {{ form.email(class="form-control", id="email", required=true) }}
+                                        <label class="form-label" for="email">Email address</label>
+                                        
+                                    </div>
+                    
+                                    <div class="form-outline mb-4">
+                                        {{ form.password(class="form-control", id="password", required=true) }}
+                                        <label class="form-label" for="password">Password</label>
+                                        
+                                    </div>
+                    
+                                    {{ form.submit(class="btn btn-primary btn-block mb-3") }}
+                                    <p style="font-size: 15px;">Don't Have an Account? <a href="{{ url_for('signup') }}">Register</a></p>
+                                    
+                                    {% with messages = get_flashed_messages(with_categories=true) %}
+                                        {% if messages %}
+                                        <div id="flash-messages">
+                                            {% for category, message in messages %}
+                                              <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                                {{ message }}
+                                              </div>
+                                            {% endfor %}
+                                        </div>
+                                        {% endif %}
+                                    {% endwith %}
+                    
+                                </form>
+                            </div>
+               
+                </div>
+            </div>
+        </div>
+    </div>
+
+        
+</section>
+
+<!-- MDBootstrap JS -->
+  <!-- Bootstrap core JS-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    setTimeout(function() {
+      let flashMessages = document.getElementById('flash-messages');
+      if (flashMessages) {
+        flashMessages.style.transition = "opacity 0.5s";
+        flashMessages.style.opacity = "0";
+        setTimeout(() => flashMessages.remove(), 500);
+      }
+    }, 1000);
+  </script>
+</body>
+</html>

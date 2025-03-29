@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@100..900&display=swap" rel="stylesheet">
+
+    <style>
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            background-color: #F8F3D9;
+        }
+
+        .container {
+            max-width: 100%;
+        }
+
+        img {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+        }
+
+        :root {
+            --primary-hue: 218;
+            --primary-saturation: 41%;
+        }
+
+        .background-radial-gradient {
+            background-color: hsl(var(--primary-hue), var(--primary-saturation), 15%);
+            background-image: 
+                radial-gradient(700px circle at 20% 20%, 
+                    hsl(var(--primary-hue), var(--primary-saturation), 40%) 10%, 
+                    hsl(var(--primary-hue), var(--primary-saturation), 30%) 35%, 
+                    hsl(var(--primary-hue), var(--primary-saturation), 20%) 65%, 
+                    transparent 100%),
+                radial-gradient(1000px circle at 80% 80%, 
+                    hsl(var(--primary-hue), var(--primary-saturation), 50%) 10%, 
+                    hsl(var(--primary-hue), var(--primary-saturation), 35%) 40%, 
+                    hsl(var(--primary-hue), var(--primary-saturation), 25%) 70%, 
+                    transparent 100%);
+        }
+
+        .bg-glass {
+            background-color: hsla(0, 0%, 100%, 0.9) !important;
+            backdrop-filter: saturate(200%) blur(25px);
+        }
+
+        .roboto-condensed-abc {
+            font-family: "Roboto Condensed", serif;
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        nav.navbar {
+            box-shadow: 0px 4px 10px rgba(0, 0, 10, 0.5);
+            z-index: 1000;
+            position: relative;
+        }
+
+        .card {
+            transition: transform 0.3s ease-in-out;
+            height: 12rem;
+        }
+
+        .card:hover {
+            transform: scale(1.03);
+        }
+
+        .nav-item .nav-link {
+            color: #EAEAEA; 
+            transition: color 0.3s ease-in-out;
+        }
+
+        .nav-item .nav-link:hover {
+            color: #f0e295; 
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light shadow-lg roboto-condensed-abc" style="background-color: hsl(218, 41%, 35%);">
+        <a class="navbar-brand mx-5 fw-bold" style="color: #EAEAEA;" href="#">DocQuery</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav ms-auto d-flex justify-content-end gap-4">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/"> <span class="visually-hidden">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/generate">Generation Que</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/query">Query</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/summarise">Summarise</a>
+                </li>
+                <li class="nav-item pe-5">
+                    {% if session.get('user') %}
+                        <a class="nav-link" href="/logout">Logout</a>
+                    {% else %}
+                        <a class="nav-link" href="/login">Login</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    
+
+    <section class="background-radial-gradient d-flex align-items-center justify-content-center vh-100 overflow-hidden">
+        <div class="container px-4 py-5 px-md-5 text-center text-lg-start ms-5" style="margin-top: -70px">
+            <h1 class="my-5 display-5 fw-bold ls-tight roboto-condensed-abc" style="color: white; font-size: 4rem">AI-Driven Document Insights</h1>
+            <p class="mb-4 roboto-condensed-abc" style="color: #FFF2F2; text-align: justify">
+                Unlock the power of AI-driven learning with our intelligent tool. Whether you need to generate a question bank or query documents effortlessly, we've got you covered. Enhance your understanding and make learning more interactive and efficient!
+            </p>
+        </div>
+
+        <div class="col-lg-6 position-relative d-flex justify-content-center align-items-center pt-4" style="margin-top: -100px">
+            <div class="col-lg-5 d-flex flex-column align-items-center pt-3">
+                <div class="card mb-3 my-3 bg-glass" style="width: 24rem; text-align: justify;background-color: #EEF2FF !important; height: 11rem;">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bolder">Generate Questions</h5>
+                        <p class="card-text">Generate a question bank from documents based on six levels of Bloom's Taxonomy.</p>
+                        <a href="/generate" class="btn btn-primary">Generate Question Bank</a>
+                    </div>
+                </div>
+                <div class="card mb-3 bg-glass" style="width: 24rem; text-align: justify; background-color: #EEF2FF !important; height: 11rem;">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bolder">Query Documents</h5>
+                        <p class="card-text">Ask questions and get instant answers based on data in your documents.</p>
+                        <a href="/query" class="btn btn-primary">Query with Document</a>
+                    </div>
+                </div>
+                <div class="card bg-glass" style="width: 24rem; text-align: justify; background-color: #EEF2FF !important; height: 11rem;">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bolder">Summarize Documents</h5>
+                        <p class="card-text">Automatically summarize your documents to extract key insights efficiently.</p>
+                        <a href="/summarise" class="btn btn-primary">Summarize Document</a>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
+</body>
+</html>

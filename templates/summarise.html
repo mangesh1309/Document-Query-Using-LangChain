@@ -1,0 +1,48 @@
+{% include 'base.html' %}
+
+<!--    &lt;!&ndash; Main Section &ndash;&gt;-->
+    <section class="background-radial-gradient d-flex align-items-center justify-content-center vh-100">
+        <div class="container px-4 py-5 px-md-5 text-center text-lg-start" style="margin-top: -10px">
+            <div class="row gx-lg-5 align-items-center">
+
+                <!-- Left Column (Text) -->
+                <div class="col-lg-6 text-white">
+                    <h1 class="display-5 fw-bold ls-tight roboto-condensed-abc"
+                        style="font-size: 4rem; margin-bottom: 0.2rem !important;">
+                        Summarise Your Document
+                    </h1>
+<!--                    <h3 style="color: hsl(218, 81%, 75%); font-size: 2rem; margin-top: 0 !important;">-->
+<!--                        Based on Bloom's Taxonomy-->
+<!--                    </h3>-->
+                    <p class="mb-4 roboto-condensed-abc" style="text-align: justify; margin-top: 18px">
+                        This part of project deals with summarising the documents to get better and short insights from long document.<br>
+                        Input the file you want to summarise and get instant summary of the it covering all the important points from the inputted document.
+                    </p>
+                </div>
+
+                <div class="col-lg-6 bg-glass p-4 rounded shadow-xl" style="background-color: #EEF2FF !important;">
+                    <h4 class="text-center fw-bold mb-3" style="color: rgb(5, 75, 137);">Summmarise Your Document</h4>
+                
+                    <!-- File Upload Form -->
+                    <form id="upload-form" enctype="multipart/form-data" class="mb-3">
+                        <div class="mb-3">
+                            <label for="pdf-files" class="form-label fw-semibold">Upload PDF File:</label>
+                            <input type="file" id="pdf-files" name="pdf_file" class="form-control" accept=".pdf" required>
+                        </div>
+                        <button type="button" class="btn btn-primary w-100" onclick="summarisePDF()">Summarise</button>
+                        <p id="status" class="mt-2 text-center text-muted"></p>
+                    </form>
+                    
+                
+                    <!-- Response Display -->
+                    <p id="summResponse" style="text-align: justify;" class="mt-3 text-muted"></p>
+                
+                </div>
+    </section>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
+    <script src="../static/js/script.js"></script>
+
+</body>
+</html>

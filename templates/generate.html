@@ -1,0 +1,182 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Q Bank</title>
+
+    <!-- Bootstrap & FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@100..900&display=swap" rel="stylesheet">
+
+    <style>
+        body, html {
+            height: 100%;
+            overflow: auto;
+        }
+
+        :root {
+            --primary-hue: 218;
+            --primary-saturation: 41%;
+        }
+
+        .background-radial-gradient {
+            background-color: hsl(var(--primary-hue), var(--primary-saturation), 15%);
+            background-image: 
+                radial-gradient(700px circle at 20% 20%, 
+                    hsl(var(--primary-hue), var(--primary-saturation), 40%) 10%, 
+                    hsl(var(--primary-hue), var(--primary-saturation), 30%) 35%, 
+                    hsl(var(--primary-hue), var(--primary-saturation), 20%) 65%, 
+                    transparent 100%),
+                radial-gradient(1000px circle at 80% 80%, 
+                    hsl(var(--primary-hue), var(--primary-saturation), 50%) 10%, 
+                    hsl(var(--primary-hue), var(--primary-saturation), 35%) 40%, 
+                    hsl(var(--primary-hue), var(--primary-saturation), 25%) 70%, 
+                    transparent 100%);
+        }
+
+        .bg-glass {
+            background-color: hsla(0, 0%, 100%, 0.9) !important;
+            backdrop-filter: saturate(200%) blur(25px);
+        }
+
+        .roboto-condensed-abc {
+            font-family: "Roboto Condensed", sans-serif;
+            font-weight: 500;
+        }
+
+        .shadow-xl {
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        .nav-item .nav-link {
+            color: #EAEAEA; 
+            transition: color 0.3s ease-in-out;
+        }
+
+        .nav-item .nav-link:hover {
+            color: #f0e295; 
+            font-weight: bold;
+        }
+        #carouselExampleIndicators {
+    border-radius: 20px;
+    overflow: hidden; /* Ensures images don’t overflow the border */
+}
+
+.carousel-inner {
+    border-radius: 20px;
+}
+
+.carousel-item {
+    border-radius: 20px;
+}
+.carousel-inner {
+    background-color: #EEF2FF !important;
+}
+
+.shadow-xl {
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.8);
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light shadow-lg roboto-condensed-abc fixed-top" style="background-color: hsl(218, 41%, 35%);">
+
+        <a class="navbar-brand mx-5 fw-bold" style="color: #EAEAEA;" href="/">DocQuery</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav ms-auto d-flex justify-content-end gap-4">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/"> <span class="visually-hidden">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/generate">Generation Questions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/query">Query</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/summarise">Summarise</a>
+                </li>
+                <li class="nav-item pe-5">
+                    {% if session.get('user') %}
+                        <a class="nav-link" href="/logout">Logout</a>
+                    {% else %}
+                        <a class="nav-link" href="/login">Login</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Section -->
+    <section class="background-radial-gradient d-flex align-items-center justify-content-center vh-100">
+        <div class="container px-4 py-5 px-md-5 text-center text-lg-start" style="margin-top: -10px">
+            <div class="row gx-lg-5 align-items-center">
+
+                <!-- Left Column (Text) -->
+                <div class="col-lg-6 text-white">
+                    <h1 class="display-5 fw-bold ls-tight roboto-condensed-abc"
+                        style="font-size: 4rem; margin-bottom: 0.2rem !important;">
+                        Generate Question Bank
+                    </h1>
+                    <h3 style="color: hsl(218, 81%, 75%); font-size: 2rem; margin-top: 0 !important;">
+                        Based on Bloom's Taxonomy
+                    </h3>
+                    <p class="mb-4 roboto-condensed-abc" style="text-align: justify; margin-top: 18px">
+                        The system generates a set of five questions for each level of Bloom's Taxonomy:
+                        Knowledge, Comprehension, Application, Analysis, Synthesis, and Evaluation. <br>
+                        Once generated, you can easily export the question bank as a PDF for convenient access and sharing.
+                    </p>
+                </div>
+
+                <!-- <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
+                <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div> -->
+
+                <!-- Right Column (Form) -->
+                <div class="col-lg-6 bg-glass p-4 rounded shadow-xl" style="background-color: #EEF2FF !important;">
+                    <h4 class="text-center fw-bold mb-3" style="color: rgb(5, 75, 137);">Generate Questions</h4>
+
+                    <form id="upload-form" enctype="multipart/form-data" class="mb-3">
+                        <div class="mb-3">
+                            <label for="pdf-files" class="form-label fw-semibold">Upload PDF Files:</label>
+                            <input type="file" id="pdf-files" name="pdf_files" multiple class="form-control">
+                        </div>
+                        <button type="button" class="btn btn-primary w-100" onclick="processPDFs()">Submit & Process</button>
+                        <p id="status" class="mt-2 text-center text-muted"></p>
+                    </form>
+
+                    <button type="button" class="btn btn-success w-100 mb-2" onclick="generateQuestionBank()" id="press">Generate Question Bank</button>
+
+                    <div id="question-bank"></div>
+
+                   <div class="d-flex justify-content-center mt-3">
+                        <button id="getdata" class="btn btn-info" onclick="getDataFile()">Get Data File</button>
+                        <br>
+                        
+                    </div>
+                    <p id="dataResponse" style="text-align: center;"></p>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+<!-- Placeholder for the carousel -->
+<div id="carousel-container" ></div>
+
+    <!-- MDB Bootstrap Script -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
+    <script src="../static/js/script.js"></script>
+
+</body>
+</html>
