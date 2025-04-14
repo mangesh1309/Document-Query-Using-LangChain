@@ -35,19 +35,20 @@ async function processPDFs() {
 
 async function askQuestion() {
     let question = document.getElementById("question").value;
-    if (!question) {
-        alert("Please enter a question.");
-        return;
-    }
-    
+    let language = document.getElementById("language").value;
+
+    let data = new FormData();
+    data.append("language", language);
+    data.append("question", question);
+
     document.getElementById("response").innerText = "This May Take A While...";
 
     try {
         let response = await fetch("/ask", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ question })
+            body: data
         });
+        
         let result = await response.json();
         let para = document.getElementById("response"); 
 
@@ -205,6 +206,7 @@ async function summarisePDF() {
     const summarySection = document.getElementById("summary-section");
     const summaryResponse = document.getElementById("summary-response");
     const statusElement = document.getElementById("status");
+    const language = document.getElementById("language");
 
     summarySection.style.display = "none";
     summaryResponse.innerHTML = "";
@@ -225,6 +227,8 @@ async function summarisePDF() {
     formData.append("pdf_file", fileInput.files[0]);
     formData.append("tone", toneSelect.value);
     formData.append("length", lengthSelect.value);
+    formData.append("language", language.value);
+    console.log(language.value)
 
 
     statusElement.innerText = "Summarizing your document...";

@@ -128,7 +128,7 @@
                     </p>
                 </div>
 
-                <div class="col-lg-6 bg-glass p-4 rounded shadow-xl" style="background-color: #EEF2FF !important;">
+                <div class="mt-5 col-lg-6 bg-glass p-4 rounded shadow-xl" style="background-color: #EEF2FF !important;">
                     <h4 class="text-center fw-bold mb-3" style="color: rgb(5, 75, 137);">Summmarise Your Document</h4>
                 
                     <!-- File Upload Form -->
@@ -156,8 +156,18 @@
                             <select class="form-select" id="length" name="length" required>
                                 <option value="" disabled selected>Select Length</option>
                                 <option value="short">Short</option>
-                                <option value="medium">Medium</option>
+                                <option value="medium">Moderate</option>
                                 <option value="lengthy">Lengthy</option>
+                            </select>
+                            
+                        </div>
+                        <div class="mb-3">
+                            <label for="length" class="form-label fw-semibold">Language:</label>
+                            <select class="form-select" id="language" name="language" required>
+                                <option value="" disabled selected>Select Language</option>
+                                <option value="en">English</option>
+                                <option value="hi">Hindi</option>
+                                <option value="mr">Marathi</option>
                             </select>
                         </div>
 
@@ -175,8 +185,8 @@
     <!-- Summary Output Section -->
 <section id="summary-section" class="py-5 background-radial-gradient" style="display: none;">
     <div class="container bg-light p-4 rounded shadow-lg">
-        <h2 class="text-center mb-4 text-primary">
-            📄 Document Summary
+        <h2 class="text-center mb-4 text-secondary roboto-condensed-abc">
+            Document Summary
         </h2>
         <div id="summary-response" class="text-muted" style="text-align: justify;"></div>
     </div>

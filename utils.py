@@ -35,7 +35,7 @@ class PDFProcessor:
 
     def get_conversational_chain(self):
         prompt_template = """
-        Answer the question as detailed as possible from the provided context, make sure to provide all the details. If the answer is not in
+        Answer the question in short (brief) from the provided context, make sure to provide all the details. If the answer is not in
         the provided context, just say, "The answer is not available in the context." Do not provide a wrong answer. 
         The answers should be in a human-like tone and should not sound AI-generated.\n\n
         Context:\n{context}\n
@@ -73,12 +73,12 @@ class PDFProcessor:
         response = chain({"input_documents": docs, "question": user_question}, return_only_outputs=True)
         return response["output_text"]
 
-    def summarize_document(self, text, tone="neutral", length="medium"):
+    def summarize_document(self, text, tone="neutral", length="moderate"):
         """Summarizes the extracted text using the Gemini model with customizable tone and length."""
         
         length_instruction = {
             "short": "Keep it very brief.",
-            "medium": "Keep it moderately detailed.",
+            "moderate": "Keep it moderately detailed.",
             "lengthy": "Provide a comprehensive and detailed summary."
         }.get(length, "Keep it moderately detailed.")
 
@@ -91,7 +91,7 @@ class PDFProcessor:
         template = PromptTemplate(
             input_variables=["tone_instruction", "length_instruction", "text"],
             template="""
-            Summarize the following document.
+            Summarize the following document. Dont bold, italic or underline any words.
             {length_instruction} {tone_instruction}
 
             Document:

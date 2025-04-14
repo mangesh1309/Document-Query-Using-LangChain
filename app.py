@@ -14,6 +14,10 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from email_sender import send_email_with_pdf
 from utils import PDFProcessor
 
+from deep_translator import GoogleTranslator
+
+
+
 app = Flask(__name__)
 bootstrap = Bootstrap5(app)
 swagger = Swagger(app)
@@ -137,11 +141,14 @@ def process():
 @app.route("/ask", methods=["POST"])
 def ask():
     try:
-        user_question = request.json.get("question")
-        print(user_question)
+        user_question = request.form.get("question")
+        language = request.form.get("language")
+        # print(user_question)
         response = pdf_processor.answer_question(user_question)
-        print(response)
-        return jsonify({"response": response})
+        # print(response)
+        translated = GoogleTranslator(source='auto', target=language).translate(response)
+
+        return jsonify({"response": translated})
     except Exception as e:
         print(e)
         return jsonify({"error": str(e)}), 500
@@ -192,6 +199,8 @@ def summarise_doc():
         pdf_file = request.files["pdf_file"]
         tone = request.form.get("tone", "neutral")
         length = request.form.get("length", "medium")
+        language = request.form.get("language")
+
 
         if pdf_file.filename == "":
             return jsonify({"error": "No selected file"}), 400
@@ -202,8 +211,9 @@ def summarise_doc():
         pdf_text = pdf_processor.get_pdf_text([file_path])  
         summary = pdf_processor.summarize_document(pdf_text, tone=tone, length=length)
         # print(summary)
+        translated = GoogleTranslator(source='auto', target=language).translate(summary)
 
-        return jsonify({"response": summary})
+        return jsonify({"response": translated})
     except Exception as e:
         print("Error:", e)
         return jsonify({"error": "Failed to generate summary. Please try again later."}), 500
