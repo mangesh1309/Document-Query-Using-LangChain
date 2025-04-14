@@ -5,8 +5,11 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
 
-MY_EMAIL = "mangeshsalunke1309@gmail.com"
-MY_PASSWORD = "xtsz ysgv shze hrpf" 
+mail_id = os.getenv("MY_EMAIL")
+password = os.getenv("MY_PASSWORD")
+
+MY_EMAIL = mail_id
+MY_PASSWORD = password 
 
 def send_email_with_pdf(pdf_filename, TO_EMAIL):
     if not os.path.exists(pdf_filename):
