@@ -73,8 +73,38 @@ class PDFProcessor:
         response = chain({"input_documents": docs, "question": user_question}, return_only_outputs=True)
         return response["output_text"]
 
-    def summarize_document(self, text):
-        """Summarizes the extracted text using the Gemini model."""
-        query = f"Summarize the following document in a concise manner:\n\n{text[:4000]}" 
-        response = self.chat_model.invoke(query)
+    def summarize_document(self, text, tone="neutral", length="medium"):
+        """Summarizes the extracted text using the Gemini model with customizable tone and length."""
+        
+        length_instruction = {
+            "short": "Keep it very brief.",
+            "medium": "Keep it moderately detailed.",
+            "lengthy": "Provide a comprehensive and detailed summary."
+        }.get(length, "Keep it moderately detailed.")
+
+        tone_instruction = {
+            "formal": "Use a formal tone.",
+            "informal": "Use a casual, easy-to-understand tone.",
+            "neutral": "Use a neutral and objective tone."
+        }.get(tone, "Use a neutral and objective tone.")
+
+        template = PromptTemplate(
+            input_variables=["tone_instruction", "length_instruction", "text"],
+            template="""
+            Summarize the following document.
+            {length_instruction} {tone_instruction}
+
+            Document:
+            {text}
+            """
+        )
+
+        prompt = template.format(
+            tone_instruction=tone_instruction,
+            length_instruction=length_instruction,
+            text=text
+        )
+
+        response = self.chat_model.invoke(prompt)
         return response.content.strip()
+

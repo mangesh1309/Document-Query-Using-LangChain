@@ -1,4 +1,112 @@
-{% include 'base.html' %}
+{% from "bootstrap5/form.html" import render_form %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignUp/Login</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    
+    {{ bootstrap.load_css() }}
+
+    <style>
+        html, body {
+            height: auto !important;   /* Allow full height based on content */
+            overflow-x: hidden;        /* Prevent horizontal scroll */
+            overflow-y: auto !important; /* Enable vertical scroll */
+        }
+
+        
+        :root {
+            --primary-hue: 218;
+            --primary-saturation: 41%;
+        }
+
+        .background-radial-gradient {
+            background-color: hsl(var(--primary-hue), var(--primary-saturation), 15%);
+            background-image: 
+                radial-gradient(700px circle at 20% 20%, 
+                    hsl(var(--primary-hue), var(--primary-saturation), 40%) 10%, 
+                    hsl(var(--primary-hue), var(--primary-saturation), 30%) 35%, 
+                    hsl(var(--primary-hue), var(--primary-saturation), 20%) 65%, 
+                    transparent 100%),
+                radial-gradient(1000px circle at 80% 80%, 
+                    hsl(var(--primary-hue), var(--primary-saturation), 50%) 10%, 
+                    hsl(var(--primary-hue), var(--primary-saturation), 35%) 40%, 
+                    hsl(var(--primary-hue), var(--primary-saturation), 25%) 70%, 
+                    transparent 100%);
+        }
+
+
+        .shadow-xl {
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.8);
+        }
+
+        .bg-glass {
+            background-color: #EEF2FF !important;
+            backdrop-filter: saturate(200%) blur(25px);
+        }
+        .roboto-condensed-abc {
+          font-family: "Roboto Condensed", serif;
+          font-optical-sizing: auto;
+          font-weight: 500;
+          font-style: normal;
+        }
+
+        .btn:focus, .btn:active {
+            box-shadow: none !important;
+            outline: none !important;
+        }
+
+        .nav-item .nav-link {
+            color: #EAEAEA; 
+            transition: color 0.3s ease-in-out;
+        }
+
+        .nav-item .nav-link:hover {
+            color: #f0e295; 
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light shadow-lg roboto-condensed-abc fixed-top" style="background-color: hsl(218, 41%, 35%);">
+
+        <a class="navbar-brand mx-5 fw-bold" style="color: #EAEAEA;" href="/">DocQuery</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav ms-auto d-flex justify-content-end gap-4">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/"> <span class="visually-hidden">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/generate">Generation Questions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/query">Query</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/summarise">Summarise</a>
+                </li>
+                <li class="nav-item pe-5">
+                    {% if session.get('user') %}
+                        <a class="nav-link" href="/logout">Logout</a>
+                    {% else %}
+                        <a class="nav-link" href="/login">Login</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+    </nav>
 
 <!--    &lt;!&ndash; Main Section &ndash;&gt;-->
     <section class="background-radial-gradient d-flex align-items-center justify-content-center vh-100">
@@ -24,21 +132,56 @@
                     <h4 class="text-center fw-bold mb-3" style="color: rgb(5, 75, 137);">Summmarise Your Document</h4>
                 
                     <!-- File Upload Form -->
+                    <!-- File Upload Form -->
                     <form id="upload-form" enctype="multipart/form-data" class="mb-3">
                         <div class="mb-3">
                             <label for="pdf-files" class="form-label fw-semibold">Upload PDF File:</label>
                             <input type="file" id="pdf-files" name="pdf_file" class="form-control" accept=".pdf" required>
                         </div>
+
+                        <!-- Tone of Summary Dropdown -->
+                        <div class="mb-3">
+                            <label for="tone" class="form-label fw-semibold">Tone of Summary:</label>
+                            <select class="form-select" id="tone" name="tone" required>
+                                <option value="" disabled selected>Select Tone</option>
+                                <option value="formal">Formal</option>
+                                <option value="informal">Informal</option>
+                                <option value="neutral">Neutral</option>
+                            </select>
+                        </div>
+
+                        <!-- Length of Summary Dropdown -->
+                        <div class="mb-3">
+                            <label for="length" class="form-label fw-semibold">Length:</label>
+                            <select class="form-select" id="length" name="length" required>
+                                <option value="" disabled selected>Select Length</option>
+                                <option value="short">Short</option>
+                                <option value="medium">Medium</option>
+                                <option value="lengthy">Lengthy</option>
+                            </select>
+                        </div>
+
                         <button type="button" class="btn btn-primary w-100" onclick="summarisePDF()">Summarise</button>
                         <p id="status" class="mt-2 text-center text-muted"></p>
                     </form>
+
                     
                 
                     <!-- Response Display -->
-                    <p id="summResponse" style="text-align: justify;" class="mt-3 text-muted"></p>
+                    <!-- <p id="summResponse" style="text-align: justify;" class="mt-3 text-muted"></p> -->
                 
                 </div>
     </section>
+    <!-- Summary Output Section -->
+<section id="summary-section" class="py-5 background-radial-gradient" style="display: none;">
+    <div class="container bg-light p-4 rounded shadow-lg">
+        <h2 class="text-center mb-4 text-primary">
+            📄 Document Summary
+        </h2>
+        <div id="summary-response" class="text-muted" style="text-align: justify;"></div>
+    </div>
+</section>
+
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>

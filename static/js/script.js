@@ -129,14 +129,12 @@ async function generateQuestionBank() {
                 </section>
             `;
 
-            // Inject the carousel HTML into the 'carousel-container' div
             document.getElementById("carousel-container").innerHTML = carouselHTML;
 
-            // Ensure Bootstrap initializes the dynamically inserted carousel
             setTimeout(() => {
                 new bootstrap.Carousel(document.getElementById("carouselExampleIndicators"), {
-                    interval: 7000, // Auto-slide every 7 seconds
-                    wrap: true      // Allow infinite looping
+                    interval: 7000, 
+                    wrap: true     
                 });
             }, 100);
 
@@ -201,35 +199,62 @@ async function getDataFile() {
 }
 
 async function summarisePDF() {
-    let fileInput = document.getElementById("pdf-files");
-    let responseElement = document.getElementById("summResponse");
+    const fileInput = document.getElementById("pdf-files");
+    const toneSelect = document.getElementById("tone");
+    const lengthSelect = document.getElementById("length");
+    const summarySection = document.getElementById("summary-section");
+    const summaryResponse = document.getElementById("summary-response");
+    const statusElement = document.getElementById("status");
+
+    summarySection.style.display = "none";
+    summaryResponse.innerHTML = "";
 
     if (fileInput.files.length === 0) {
-        responseElement.innerText = "Please upload a PDF file.";
-        responseElement.style.color = "red";
+        statusElement.innerText = "Please upload a PDF file.";
+        statusElement.style.color = "red";
         return;
     }
 
-    let formData = new FormData();
-    formData.append("pdf_file", fileInput.files[0]);
+    if (!toneSelect.value || !lengthSelect.value) {
+        statusElement.innerText = "Please select both tone and length.";
+        statusElement.style.color = "red";
+        return;
+    }
 
-    responseElement.innerText = "Uploading and summarizing...";
+    const formData = new FormData();
+    formData.append("pdf_file", fileInput.files[0]);
+    formData.append("tone", toneSelect.value);
+    formData.append("length", lengthSelect.value);
+
+
+    statusElement.innerText = "Summarizing your document...";
+    statusElement.style.color = "black";
 
     try {
-        let response = await fetch("/summarise_doc", {
+        const response = await fetch("/summarise_doc", {
             method: "POST",
             body: formData,
         });
 
-        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        const result = await response.json();
+        var data = result.response;
+        data = data.replace("*"," ")
 
-        let result = await response.json();
-        responseElement.innerText = result.response || result.error;
-        responseElement.style.color = result.error ? "red" : "black"; 
+        if (result.error) {
+            summaryResponse.innerHTML = `<p class="text-danger">${result.error}</p>`;
+        } else {
+            summaryResponse.innerHTML = `<p>${result.response}</p>`;
+            summarySection.style.display = "flex";
+
+            // Scroll to summary
+            summarySection.scrollIntoView({ behavior: "smooth" });
+        }
+
+        statusElement.innerText = "Scroll Down to View Results!";
     } catch (error) {
-        responseElement.innerText = "An error occurred while summarizing the document.";
-        responseElement.style.color = "red";
-        console.error("Error:", error);
+        console.error("Summary error:", error);
+        summaryResponse.innerHTML = `<p class="text-danger">An error occurred while summarizing the document.</p>`;
+        statusElement.innerText = "";
     }
 }
 

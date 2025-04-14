@@ -190,6 +190,8 @@ def summarise_doc():
             return jsonify({"error": "No file uploaded"}), 400
         
         pdf_file = request.files["pdf_file"]
+        tone = request.form.get("tone", "neutral")
+        length = request.form.get("length", "medium")
 
         if pdf_file.filename == "":
             return jsonify({"error": "No selected file"}), 400
@@ -198,8 +200,8 @@ def summarise_doc():
         pdf_file.save(file_path)
 
         pdf_text = pdf_processor.get_pdf_text([file_path])  
-        summary = pdf_processor.summarize_document(pdf_text)
-        print(summary)
+        summary = pdf_processor.summarize_document(pdf_text, tone=tone, length=length)
+        # print(summary)
 
         return jsonify({"response": summary})
     except Exception as e:
